@@ -2,8 +2,11 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 
+//importing pages
+import HomePage from './pages/home/HomePage';
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <h1 className='text-5xl font-medium'>Hello world</h1>
+    <HomePage/>
   </StrictMode>
 );
