@@ -39,4 +39,11 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/Adhish-Krishna/RealEyes",
   },
+  {
+    title: "PSG - AI CONSORTIUM",
+    description: "This project is a fully frontend focused project. Its a website for PSG - AI CONSORTIUM.",
+    tags: ["React.js", "TypeScript", "Node.js"],
+    link: "https://aiconsortium.psgtech.ac.in",
+    github: "https://github.com/Adhish-Krishna/AIConsortium",
+  }
 ];

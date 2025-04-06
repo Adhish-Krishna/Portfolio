@@ -117,6 +117,7 @@ export function Projects({
                     speed={25}
                     delay={index * 300}
                     inView={isProjectVisible(index)}
+                    tag="span"
                   />
                 </h3>
                 <p className="text-neutral-400 text-sm flex-grow mb-4">
@@ -126,6 +127,8 @@ export function Projects({
                       speed={5}
                       delay={300 + index * 300}
                       inView={isProjectVisible(index)}
+                      tag="span"
+                      parentTag="p"
                     />
                   ) : (
                     ""

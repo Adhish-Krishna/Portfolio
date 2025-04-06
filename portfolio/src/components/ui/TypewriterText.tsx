@@ -11,6 +11,7 @@ interface TypewriterTextProps {
   tag?: ElementType;
   cursor?: boolean;
   inView?: boolean;
+  parentTag?: string;
 }
 
 export function TypewriterText({
@@ -21,12 +22,20 @@ export function TypewriterText({
   onComplete,
   tag: Component = 'div',
   cursor = true,
-  inView = true
+  inView = true,
+  parentTag
 }: TypewriterTextProps) {
   // Convert ReactNode to string if needed
   const textContent = typeof text === 'string' ? text : JSON.stringify(text);
   const [isVisible, setIsVisible] = useState(false);
   const elementRef = useRef<HTMLElement>(null);
+
+  // Automatically determine the appropriate tag based on parent element
+  // If inside a <p>, use a <span> instead of a <div>
+  let FinalComponent = Component;
+  if (parentTag === 'p') {
+    FinalComponent = 'span';
+  }
 
   const { displayText, isTyping } = useTypewriter({
     text: textContent,
@@ -63,11 +72,11 @@ export function TypewriterText({
 
   // If this is a React element and typewriter is complete, render the original
   if (typeof text !== 'string' && !isTyping && isVisible) {
-    return <Component className={className}>{text}</Component>;
+    return <FinalComponent className={className}>{text}</FinalComponent>;
   }
 
   return (
-    <Component
+    <FinalComponent
       className={cn(className, "relative")}
       ref={elementRef as any}
     >
@@ -75,6 +84,6 @@ export function TypewriterText({
       {cursor && isTyping && (
         <span className="ml-0.5 inline-block h-4 w-0.5 animate-blink bg-current" />
       )}
-    </Component>
+    </FinalComponent>
   );
 }

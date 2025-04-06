@@ -1,7 +1,36 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, JSX } from "react";
 import { cn } from "../../lib/utils";
 import { aboutData as defaultAboutData } from "../../data/about";
 import { TypewriterText } from "../ui/TypewriterText";
+import { GitHubStatsCard } from "../ui/GitHubStatsCard";
+// Add SVG icons import for skills
+import { FaReact, FaPython, FaJava, FaGit, FaGithub, FaFigma } from "react-icons/fa";
+import { SiJavascript, SiC, SiExpress, SiFastapi, SiPostgresql, SiSqlite, SiCanva, SiLangchain, SiTypescript } from "react-icons/si";
+import { GrGraphQl } from "react-icons/gr";
+import { BsPersonFill } from "react-icons/bs";
+import { MdOutlineLeaderboard } from "react-icons/md";
+
+// Skill icons mapping
+const skillIcons: Record<string, JSX.Element> = {
+  "C": <SiC className="text-2xl" />,
+  "Python": <FaPython className="text-2xl" />,
+  "JavaScript": <SiJavascript className="text-2xl" />,
+  "TypeScript":<SiTypescript className="text-2xl"/>,
+  "Java": <FaJava className="text-2xl" />,
+  "React.js": <FaReact className="text-2xl" />,
+  "Express.js": <SiExpress className="text-2xl" />,
+  "Fast API": <SiFastapi className="text-2xl" />,
+  "PostgreSQL": <SiPostgresql className="text-2xl" />,
+  "SQLite": <SiSqlite className="text-2xl" />,
+  "Git": <FaGit className="text-2xl" />,
+  "GitHub": <FaGithub className="text-2xl" />,
+  "Figma": <FaFigma className="text-2xl" />,
+  "Canva": <SiCanva className="text-2xl" />,
+  "Event Management": <BsPersonFill className="text-2xl" />,
+  "Leadership": <MdOutlineLeaderboard className="text-2xl" />,
+  "Langchain": <SiLangchain className="text-2xl" />,
+  "Langgraph": <GrGraphQl className="text-2xl" />
+};
 
 interface AboutProps {
   className?: string;
@@ -10,6 +39,7 @@ interface AboutProps {
   description?: string | React.ReactNode;
   skills?: string[];
   accentColor?: string;
+  githubUsername?: string;
 }
 
 export function About({
@@ -19,6 +49,7 @@ export function About({
   description = defaultAboutData.description,
   skills = defaultAboutData.skills,
   accentColor = "#38d9f5",
+  githubUsername = "Adhish-Krishna",
 }: AboutProps) {
   const [secretVisible, setSecretVisible] = useState(false);
   const [konami, setKonami] = useState("");
@@ -112,6 +143,19 @@ export function About({
             />
           </div>
 
+          {/* GitHub Stats - New Addition */}
+          <div className="mb-12">
+            <h3 className="text-xl text-white mb-4">
+              <TypewriterText
+                text="GitHub Activity"
+                speed={50}
+                delay={600}
+                inView={isInView}
+              />
+            </h3>
+            <GitHubStatsCard username={githubUsername} accentColor={accentColor} />
+          </div>
+
           {/* Skills */}
           <div className={`transition-opacity duration-1000 ${skillsVisible ? 'opacity-100' : 'opacity-0'}`}>
             <h3 className="text-xl text-white mb-4">
@@ -122,11 +166,12 @@ export function About({
                 inView={skillsVisible}
               />
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-4 justify-center">
               {skills.map((skill, index) => (
                 <span
                   key={index}
-                  className="px-3 py-1 rounded-full text-sm transition-all duration-500"
+                  title={skill}
+                  className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-500"
                   style={{
                     backgroundColor: `${accentColor}20`,
                     border: `1px solid ${accentColor}50`,
@@ -136,7 +181,7 @@ export function About({
                     transitionDelay: `${index * 100}ms`
                   }}
                 >
-                  {skill}
+                  {skillIcons[skill]}
                 </span>
               ))}
             </div>

@@ -161,6 +161,7 @@ export function Experience({
                           speed={15}
                           delay={100}
                           inView={visibleItems.includes(index)}
+                          tag="span"
                         />
                       ) : (
                         exp.title
@@ -179,6 +180,7 @@ export function Experience({
                         speed={20}
                         delay={500}
                         inView={visibleItems.includes(index)}
+                        tag="span"
                       />
                     ) : (
                       exp.company
@@ -192,6 +194,7 @@ export function Experience({
                         speed={5}
                         delay={1000}
                         inView={visibleItems.includes(index)}
+                        tag="span"
                       />
                     ) : (
                       ""
