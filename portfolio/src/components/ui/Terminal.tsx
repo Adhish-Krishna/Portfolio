@@ -62,7 +62,7 @@ Use the following commands to navigate:
 - \`clear\` - Clear the terminal
 - \`help\` - Display available commands
 - \`exit\` - Exit terminal mode
-- \`echo <string>\` - Prints the string to the console
+- \`echo <"string">\` - Prints the string to the console
 
 Try exploring the directories to learn more about me:
 - about/
