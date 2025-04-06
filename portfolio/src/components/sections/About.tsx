@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { cn } from "../../lib/utils";
+import { aboutData as defaultAboutData } from "../../data/about";
 
 interface AboutProps {
   className?: string;
@@ -12,22 +13,10 @@ interface AboutProps {
 
 export function About({
   className = "",
-  title = "About Me",
-  subtitle = "Get to know me better",
-  description = (
-    <>
-      <p className="mb-4">
-        Hi there! I'm a passionate software engineer with a love for building elegant solutions to complex problems. My journey in tech began when I first discovered the magic of turning code into functional applications.
-      </p>
-      <p>
-        I specialize in full-stack development with a focus on modern technologies. When I'm not coding, you'll find me exploring new tech, contributing to open-source projects, or learning something new.
-      </p>
-    </>
-  ),
-  skills = [
-    "JavaScript", "TypeScript", "React", "Node.js", "Python",
-    "HTML/CSS", "SQL", "Git", "AWS", "Docker"
-  ],
+  title = defaultAboutData.title || "About Me",
+  subtitle = defaultAboutData.subtitle || "Get to know me better",
+  description = defaultAboutData.description,
+  skills = defaultAboutData.skills,
   accentColor = "#38d9f5",
 }: AboutProps) {
   const [secretVisible, setSecretVisible] = useState(false);

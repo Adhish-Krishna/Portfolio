@@ -1,22 +1,22 @@
 import { cn } from "../../lib/utils";
 import { useEffect, useState, useRef } from "react";
-import { ExperienceItem, experiences as defaultExperiences } from "../../data/experience";
+import { EducationItem, educations as defaultEducations } from "../../data/education";
 
-interface ExperienceProps {
+interface EducationProps {
   className?: string;
   title?: string;
   subtitle?: string;
-  experiences?: ExperienceItem[];
+  educations?: EducationItem[];
   accentColor?: string;
 }
 
-export function Experience({
+export function Education({
   className = "",
-  title = "Experience",
-  subtitle = "My professional journey",
-  experiences = defaultExperiences,
+  title = "Education",
+  subtitle = "My academic journey",
+  educations = defaultEducations,
   accentColor = "#38d9f5",
-}: ExperienceProps) {
+}: EducationProps) {
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -49,7 +49,7 @@ export function Experience({
 
   return (
     <section
-      id="experience"
+      id="education"
       className={cn(
         "relative min-h-screen w-full overflow-hidden bg-transparent antialiased py-20",
         className
@@ -76,9 +76,9 @@ export function Experience({
           {subtitle}
         </p>
 
-        {/* Experience Timeline */}
+        {/* Education Timeline */}
         <div className="max-w-3xl mx-auto">
-          {experiences.map((exp, index) => (
+          {educations.map((edu, index) => (
             <div
               key={index}
               className="relative mb-12"
@@ -92,7 +92,7 @@ export function Experience({
               }}
             >
               {/* Timeline connector */}
-              {index !== experiences.length - 1 && (
+              {index !== educations.length - 1 && (
                 <div
                   className="absolute left-8 top-8 w-px h-full -z-10"
                   style={{
@@ -126,37 +126,30 @@ export function Experience({
                   }}
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
-                    <h3 className="text-xl font-medium text-white">{exp.title}</h3>
-                    <span className="text-sm text-neutral-400">{exp.period}</span>
+                    <h3 className="text-xl font-medium text-white">{edu.degree}</h3>
+                    <span className="text-sm text-neutral-400">{edu.period}</span>
                   </div>
 
                   <div
                     className="text-neutral-300 font-medium mb-4"
                     style={{ color: accentColor }}
                   >
-                    {exp.company}
+                    {edu.institution}
                   </div>
 
                   <div className="text-neutral-400 mb-4 leading-relaxed">
-                    {exp.description}
+                    {edu.description}
                   </div>
 
-                  {exp.skills && (
-                    <div className="flex flex-wrap gap-2">
-                      {exp.skills.map((skill, skillIndex) => (
-                        <span
-                          key={skillIndex}
-                          className="px-2 py-1 text-xs rounded-full transition-transform duration-300 hover:scale-105"
-                          style={{
-                            backgroundColor: `${accentColor}20`,
-                            color: accentColor,
-                            animation: visibleItems.includes(index) ? `fadeIn 0.3s ${0.5 + skillIndex * 0.1}s forwards` : 'none',
-                            opacity: 0
-                          }}
-                        >
-                          {skill}
-                        </span>
-                      ))}
+                  {edu.gpa && (
+                    <div
+                      className="inline-block px-3 py-1 rounded-full text-sm"
+                      style={{
+                        backgroundColor: `${accentColor}20`,
+                        color: accentColor
+                      }}
+                    >
+                      GPA: {edu.gpa}
                     </div>
                   )}
                 </div>
@@ -181,11 +174,6 @@ export function Experience({
         @keyframes fadeInUp {
           0% { opacity: 0; transform: translateY(20px); }
           100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-          0% { opacity: 0; }
-          100% { opacity: 1; }
         }
       `}</style>
     </section>
