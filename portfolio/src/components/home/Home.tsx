@@ -3,10 +3,11 @@ import Particles from "../ui/Particles";
 import { Navbar } from "../ui/Navbar";
 import { Background } from "../ui/Background";
 import { About } from "../sections/About";
-import { Education } from "../sections/Education"; // Added Education import
+import { Education } from "../sections/Education";
 import { Projects } from "../sections/Projects";
 import { Experience } from "../sections/Experience";
 import { Contact } from "../sections/Contact";
+import { CodeReveal } from "../ui/CodeReveal"; // Using the new CodeReveal component
 
 export function Home() {
   const accentColor = "#38d9f5";
@@ -37,11 +38,26 @@ export function Home() {
         />
 
         <div className="flex flex-col justify-center items-center h-screen z-10 mx-auto w-full max-w-7xl p-4 pt-20 md:pt-0">
-          <h1 className="bg-opacity-50 bg-gradient-to-b from-neutral-50 to-neutral-400 bg-clip-text text-center text-3xl font-bold text-transparent sm:text-4xl md:text-7xl">
-            Adhish Krishna S
+          <h1 className="text-center text-3xl font-bold sm:text-4xl md:text-7xl">
+            <CodeReveal
+              text="Adhish Krishna S"
+              delay={800}
+              typingSpeed={100}
+              glitchProbability={0.15}
+              colorAccent={accentColor}
+              cursorColor={accentColor}
+              className="bg-gradient-to-b from-neutral-50 to-neutral-400 bg-clip-text text-transparent"
+              onComplete={() => {}}
+            />
           </h1>
-          <p className="mx-auto mt-2 md:mt-4 max-w-lg text-center text-sm sm:text-base font-normal text-neutral-300">
-            Aspiring Software Engineer
+          <p className="mx-auto mt-2 md:mt-4 max-w-lg text-center text-base sm:text-lg font-normal text-neutral-300">
+            <CodeReveal
+              text="Aspiring Software Engineer"
+              delay={3000}
+              typingSpeed={50}
+              glitchProbability={0.1}
+              colorAccent={accentColor}
+            />
           </p>
         </div>
       </section>
