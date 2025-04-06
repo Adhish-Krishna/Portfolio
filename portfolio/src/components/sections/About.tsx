@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { cn } from "../../lib/utils";
 import { aboutData as defaultAboutData } from "../../data/about";
+import { TypewriterText } from "../ui/TypewriterText";
 
 interface AboutProps {
   className?: string;
@@ -23,6 +24,9 @@ export function About({
   const [konami, setKonami] = useState("");
   const [keySequence, setKeySequence] = useState("");
   const secretRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+  const aboutRef = useRef<HTMLDivElement>(null);
+  const [skillsVisible, setSkillsVisible] = useState(false);
 
   // Set up konami code easter egg to reveal the C language secret
   useEffect(() => {
@@ -57,9 +61,32 @@ export function About({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [keySequence]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsInView(true);
+          observer.unobserve(entries[0].target);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (aboutRef.current) {
+      observer.observe(aboutRef.current);
+    }
+
+    return () => {
+      if (aboutRef.current) {
+        observer.disconnect();
+      }
+    };
+  }, []);
+
   return (
     <section
       id="about"
+      ref={aboutRef}
       className={cn(
         "relative min-h-screen w-full overflow-hidden bg-transparent antialiased py-20",
         className
@@ -74,23 +101,39 @@ export function About({
 
           <p className="text-center text-neutral-400 mb-8">{subtitle}</p>
 
-          {/* About description */}
-          <div className="text-neutral-300 mb-12">
-            {description}
+          {/* About description with typewriter effect */}
+          <div className="text-neutral-300 mb-12 ai-box p-6">
+            <TypewriterText
+              text={description}
+              speed={5}
+              delay={300}
+              inView={isInView}
+              onComplete={() => setSkillsVisible(true)}
+            />
           </div>
 
           {/* Skills */}
-          <div>
-            <h3 className="text-xl text-white mb-4">Skills</h3>
+          <div className={`transition-opacity duration-1000 ${skillsVisible ? 'opacity-100' : 'opacity-0'}`}>
+            <h3 className="text-xl text-white mb-4">
+              <TypewriterText
+                text="Skills"
+                speed={50}
+                delay={100}
+                inView={skillsVisible}
+              />
+            </h3>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill, index) => (
                 <span
                   key={index}
-                  className="px-3 py-1 rounded-full text-sm"
+                  className="px-3 py-1 rounded-full text-sm transition-all duration-500"
                   style={{
                     backgroundColor: `${accentColor}20`,
                     border: `1px solid ${accentColor}50`,
-                    color: accentColor
+                    color: accentColor,
+                    opacity: skillsVisible ? 1 : 0,
+                    transform: skillsVisible ? 'translateY(0)' : 'translateY(10px)',
+                    transitionDelay: `${index * 100}ms`
                   }}
                 >
                   {skill}
@@ -130,7 +173,12 @@ int main() {
 }
                 `}</pre>
                 <div className="mt-4 text-neutral-300 italic">
-                  <p>C is the foundation of modern computing - elegant, powerful, and timeless.</p>
+                  <TypewriterText
+                    text="C is the foundation of modern computing - elegant, powerful, and timeless."
+                    speed={30}
+                    delay={200}
+                    inView={secretVisible}
+                  />
                 </div>
               </div>
             )}

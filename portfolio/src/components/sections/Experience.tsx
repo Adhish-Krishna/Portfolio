@@ -1,6 +1,7 @@
 import { cn } from "../../lib/utils";
 import { useEffect, useState, useRef } from "react";
 import { ExperienceItem, experiences as defaultExperiences } from "../../data/experience";
+import { TypewriterText } from "../ui/TypewriterText";
 
 interface ExperienceProps {
   className?: string;
@@ -19,8 +20,34 @@ export function Experience({
 }: ExperienceProps) {
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsInView(true);
+          observer.unobserve(entries[0].target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.disconnect();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isInView) return;
+
     const observerOptions = {
       root: null,
       rootMargin: '0px',
@@ -45,11 +72,12 @@ export function Experience({
     });
 
     return () => observer.disconnect();
-  }, [itemRefs.current.length]);
+  }, [isInView, itemRefs.current.length]);
 
   return (
     <section
       id="experience"
+      ref={sectionRef}
       className={cn(
         "relative min-h-screen w-full overflow-hidden bg-transparent antialiased py-20",
         className
@@ -119,14 +147,25 @@ export function Experience({
 
                 {/* Content */}
                 <div
-                  className="bg-[#0a1622] border border-[#171717] rounded-xl p-6 md:ml-4 flex-1 hover:border-opacity-50 transition-all duration-300"
+                  className="bg-[#0a1622] border border-[#171717] rounded-xl p-6 md:ml-4 flex-1 hover:border-opacity-50 transition-all duration-300 ai-box"
                   style={{
                     borderColor: visibleItems.includes(index) ? accentColor + '40' : '#171717',
                     boxShadow: visibleItems.includes(index) ? `0 4px 20px ${accentColor}10` : 'none'
                   }}
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
-                    <h3 className="text-xl font-medium text-white">{exp.title}</h3>
+                    <h3 className="text-xl font-medium text-white">
+                      {visibleItems.includes(index) ? (
+                        <TypewriterText
+                          text={exp.title}
+                          speed={15}
+                          delay={100}
+                          inView={visibleItems.includes(index)}
+                        />
+                      ) : (
+                        exp.title
+                      )}
+                    </h3>
                     <span className="text-sm text-neutral-400">{exp.period}</span>
                   </div>
 
@@ -134,11 +173,29 @@ export function Experience({
                     className="text-neutral-300 font-medium mb-4"
                     style={{ color: accentColor }}
                   >
-                    {exp.company}
+                    {visibleItems.includes(index) ? (
+                      <TypewriterText
+                        text={exp.company}
+                        speed={20}
+                        delay={500}
+                        inView={visibleItems.includes(index)}
+                      />
+                    ) : (
+                      exp.company
+                    )}
                   </div>
 
                   <div className="text-neutral-400 mb-4 leading-relaxed">
-                    {exp.description}
+                    {visibleItems.includes(index) ? (
+                      <TypewriterText
+                        text={exp.description || ""}
+                        speed={5}
+                        delay={1000}
+                        inView={visibleItems.includes(index)}
+                      />
+                    ) : (
+                      ""
+                    )}
                   </div>
 
                   {exp.skills && (
@@ -146,12 +203,14 @@ export function Experience({
                       {exp.skills.map((skill, skillIndex) => (
                         <span
                           key={skillIndex}
-                          className="px-2 py-1 text-xs rounded-full transition-transform duration-300 hover:scale-105"
+                          className="px-2 py-1 text-xs rounded-full transition-all duration-500"
                           style={{
                             backgroundColor: `${accentColor}20`,
                             color: accentColor,
                             animation: visibleItems.includes(index) ? `fadeIn 0.3s ${0.5 + skillIndex * 0.1}s forwards` : 'none',
-                            opacity: 0
+                            opacity: 0,
+                            transform: visibleItems.includes(index) ? 'scale(1)' : 'scale(0.8)',
+                            transitionDelay: `${1500 + skillIndex * 100}ms`
                           }}
                         >
                           {skill}

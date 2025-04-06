@@ -1,5 +1,7 @@
+import { useState, useEffect, useRef } from "react";
 import { cn } from "../../lib/utils";
 import { Project, projects as defaultProjects } from "../../data/projects";
+import { TypewriterText } from "../ui/TypewriterText";
 
 interface ProjectsProps {
   className?: string;
@@ -16,9 +18,70 @@ export function Projects({
   projects = defaultProjects,
   accentColor = "#38d9f5",
 }: ProjectsProps) {
+  const [visibleProjects, setVisibleProjects] = useState<number[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const projectRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsInView(true);
+          observer.unobserve(entries[0].target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.disconnect();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    const projectObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = projectRefs.current.findIndex(
+              (ref) => ref === entry.target
+            );
+            if (index !== -1 && !visibleProjects.includes(index)) {
+              setVisibleProjects((prev) => [...prev, index]);
+            }
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -100px 0px" }
+    );
+
+    projectRefs.current.forEach((ref) => {
+      if (ref) projectObserver.observe(ref);
+    });
+
+    return () => {
+      projectObserver.disconnect();
+    };
+  }, [isInView]);
+
+  // Function to simulate AI-generated content
+  const isProjectVisible = (index: number) => {
+    return visibleProjects.includes(index);
+  };
+
   return (
     <section
       id="projects"
+      ref={sectionRef}
       className={cn(
         "relative min-h-screen w-full overflow-hidden bg-transparent antialiased py-20",
         className
@@ -37,15 +100,36 @@ export function Projects({
           {projects.map((project, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-xl bg-[#0a1622] p-6 border border-[#171717] hover:border-[#38d9f580] transition-all duration-300"
+              ref={(el) => { projectRefs.current[index] = el; }}
+              className={`group relative overflow-hidden rounded-xl bg-[#0a1622] p-6 border border-[#171717] transition-all duration-700 ai-box ${
+                isProjectVisible(index) ? "opacity-100" : "opacity-0 translate-y-10"
+              }`}
+              style={{
+                transitionDelay: `${index * 200}ms`,
+                borderColor: isProjectVisible(index) ? `${accentColor}80` : "#171717",
+              }}
             >
               {/* Project content */}
               <div className="h-full flex flex-col">
                 <h3 className="text-xl font-medium text-white mb-2">
-                  {project.title}
+                  <TypewriterText
+                    text={project.title}
+                    speed={25}
+                    delay={index * 300}
+                    inView={isProjectVisible(index)}
+                  />
                 </h3>
                 <p className="text-neutral-400 text-sm flex-grow mb-4">
-                  {project.description}
+                  {isProjectVisible(index) ? (
+                    <TypewriterText
+                      text={project.description}
+                      speed={5}
+                      delay={300 + index * 300}
+                      inView={isProjectVisible(index)}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </p>
 
                 {/* Tags */}
@@ -53,10 +137,13 @@ export function Projects({
                   {project.tags.map((tag, tagIndex) => (
                     <span
                       key={tagIndex}
-                      className="px-2 py-1 text-xs rounded-full"
+                      className="px-2 py-1 text-xs rounded-full transition-all duration-500"
                       style={{
                         backgroundColor: `${accentColor}20`,
                         color: accentColor,
+                        opacity: isProjectVisible(index) ? 1 : 0,
+                        transform: isProjectVisible(index) ? "scale(1)" : "scale(0.8)",
+                        transitionDelay: `${500 + tagIndex * 100 + index * 100}ms`,
                       }}
                     >
                       {tag}
@@ -65,7 +152,9 @@ export function Projects({
                 </div>
 
                 {/* Links */}
-                <div className="flex gap-3 mt-auto">
+                <div className="flex gap-3 mt-auto transition-opacity duration-500"
+                     style={{ opacity: isProjectVisible(index) ? 1 : 0,
+                             transitionDelay: `${1000 + index * 200}ms` }}>
                   {project.github && (
                     <a
                       href={project.github}
