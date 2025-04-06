@@ -15,6 +15,7 @@ export function Navbar({
     { name: "About", href: "#about" },
     { name: "Projects", href: "#projects" },
     { name: "Experience", href: "#experience" },
+    { name: "Contact", href: "#contact" },
   ],
   accentColor = "#38d9f5",
   logoText = "AK",
