@@ -4,6 +4,6 @@ import './index.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <h1>Hello world</h1>
-  </StrictMode>,
-)
+    <h1 className='text-5xl font-medium'>Hello world</h1>
+  </StrictMode>
+);
