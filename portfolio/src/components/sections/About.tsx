@@ -3,6 +3,7 @@ import { cn } from "../../lib/utils";
 import { aboutData as defaultAboutData } from "../../data/about";
 import { TypewriterText } from "../ui/TypewriterText";
 import { GitHubStatsCard } from "../ui/GitHubStatsCard";
+import { GitHubReadmeStats } from "../ui/GitHubReadmeStats";
 // Add SVG icons import for skills
 import { FaReact, FaPython, FaJava, FaGit, FaGithub, FaFigma } from "react-icons/fa";
 import { SiJavascript, SiC, SiExpress, SiFastapi, SiPostgresql, SiSqlite, SiCanva, SiLangchain, SiTypescript } from "react-icons/si";
@@ -154,6 +155,19 @@ export function About({
               />
             </h3>
             <GitHubStatsCard username={githubUsername} accentColor={accentColor} />
+
+            {/* GitHub Readme Stats */}
+            <div className="mt-8">
+              <h3 className="text-xl text-white mb-4">
+                <TypewriterText
+                  text="GitHub Profile Stats"
+                  speed={50}
+                  delay={800}
+                  inView={isInView}
+                />
+              </h3>
+              <GitHubReadmeStats username={githubUsername} accentColor={accentColor} />
+            </div>
           </div>
 
           {/* Skills */}
@@ -171,7 +185,7 @@ export function About({
                 <span
                   key={index}
                   title={skill}
-                  className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-500"
+                  className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg group relative"
                   style={{
                     backgroundColor: `${accentColor}20`,
                     border: `1px solid ${accentColor}50`,
@@ -181,7 +195,18 @@ export function About({
                     transitionDelay: `${index * 100}ms`
                   }}
                 >
-                  {skillIcons[skill]}
+                  <div className="transform transition-transform duration-300 group-hover:rotate-12">
+                    {skillIcons[skill]}
+                  </div>
+                  <span 
+                    className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
+                    style={{
+                      borderColor: accentColor,
+                      boxShadow: `0 0 5px ${accentColor}40`
+                    }}
+                  >
+                    {skill}
+                  </span>
                 </span>
               ))}
             </div>

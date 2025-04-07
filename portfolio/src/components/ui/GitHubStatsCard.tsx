@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useGitHubStats } from '../../lib/useGitHubStats';
 import { TypewriterText } from './TypewriterText';
 import { cn } from '../../lib/utils';
-import { FaGithub, FaStar, FaUserFriends, FaCode } from 'react-icons/fa';
-import { RiGitPullRequestFill } from 'react-icons/ri';
+import { FaGithub, FaStar, FaUserFriends } from 'react-icons/fa';
 import { VscRepo } from 'react-icons/vsc';
 
 interface GitHubStatsCardProps {
@@ -162,17 +161,7 @@ export function GitHubStatsCard({
       title: "Stars",
       value: formatNumber(stats.stars),
       icon: <FaStar className="text-2xl" />,
-    },
-    {
-      title: "Commits",
-      value: formatNumber(stats.commits),
-      icon: <FaCode className="text-2xl" />,
-    },
-    {
-      title: "Pull Requests",
-      value: formatNumber(stats.pullRequests),
-      icon: <RiGitPullRequestFill className="text-2xl" />,
-    },
+    }
   ];
 
   return (
@@ -261,7 +250,7 @@ export function GitHubStatsCard({
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         {statCards.map((stat, index) => (
           <div
             key={index}
@@ -285,65 +274,6 @@ export function GitHubStatsCard({
             <div className="text-xs text-neutral-400 mt-1">{stat.title}</div>
           </div>
         ))}
-      </div>
-
-      {/* Contributions */}
-      <div
-        className="mt-6 pt-4 border-t transition-all"
-        style={{
-          borderColor: `${accentColor}20`,
-          animation: isVisible ? 'fadeIn 0.5s 0.8s forwards' : 'none',
-          opacity: 0,
-        }}
-      >
-        <div className="flex justify-between items-center mb-2">
-          <h4 className="text-white text-sm font-medium">
-            <TypewriterText
-              text="Contribution Activity"
-              speed={20}
-              delay={1000}
-              inView={isVisible}
-            />
-          </h4>
-          <span className="text-xs text-neutral-500">
-            {new Date().getFullYear()}
-          </span>
-        </div>
-
-        {/* Fake contribution graph - a simple bar chart */}
-        <div className="h-20 flex items-end space-x-1">
-          {[...Array(52)].map((_, i) => {
-            // Generate a pseudo-random height for visualization
-            const height = Math.max(
-              5,
-              Math.floor(
-                Math.sin((i + stats.followers) * 0.4) * 25 +
-                Math.cos((i + stats.following) * 0.8) * 25 + 50
-              )
-            );
-
-            return (
-              <div
-                key={i}
-                className="flex-1 transition-all duration-300 hover:opacity-100"
-                style={{
-                  height: `${height}%`,
-                  backgroundColor: `${accentColor}${Math.min(Math.floor(height / 5) * 10 + 20, 80)}`,
-                  opacity: 0.7,
-                  animationDelay: `${1.2 + i * 0.01}s`,
-                  animation: isVisible ? 'growUp 0.5s forwards' : 'none',
-                  transformOrigin: 'bottom',
-                  transform: 'scaleY(0)',
-                }}
-                title={`Week ${i+1}: ${Math.floor(height * 1.5)} contributions`}
-              />
-            );
-          })}
-        </div>
-
-        <div className="text-right mt-2 text-xs text-neutral-400">
-          {formatNumber(stats.contributions)} contributions in the last year
-        </div>
       </div>
 
       <style>{`
