@@ -17,27 +17,16 @@ export const projects: Project[] = [
     github: "https://github.com/Adhish-Krishna/AiDA-CLI",
   },
   {
-    title: "BookGPT",
-    description:
-      "BookGPT allows users to chat with preindexed botany books or upload custom PDFs for interactive conversations. Integrate Retrieval-Augmented Generation (RAG) to extract and summarize content, answer user queries, and enhance learning experiences through an intuitive AI chatbot interface.",
-    tags: ["Python", "Flask", "JavaScript", "EJS", "PostgreSQL", "Ollama"],
-    github: "https://github.com/Adhish-Krishna/RAG-2",
+    title: "Event Management System (EMS)",
+    description: "An event management portal for college clubs to manage their events efficiently and for the participants to register for the events with in one click.",
+    tags: ["Node.js", "TypeScript", "PostgreSQL", "Prisma"],
+    github: "https://github.com/Adhish-Krishna/CSEA-EMS"
   },
   {
-    title: "The Real Eye: A Multi-Modal Deepfake Detection System",
-    description:
-      "The Real Eye is a multi-modal deepfake detection system capable of analyzing videos, images, audio, and text for synthetic manipulations. It leverages CNN-based models to detect deepfakes in videos and images, while Wave2Vec and Librosa are used for audio analysis. For text-based deepfake detection, it employs BART (Bidirectional and Auto-Regressive Transformers) to identify manipulated content.",
-    tags: [
-      "Python",
-      "TensorFlow",
-      "CNN",
-      "Wave2Vec",
-      "Librosa",
-      "BART",
-      "React",
-      "Flask",
-    ],
-    github: "https://github.com/Adhish-Krishna/RealEyes",
+    title: "EMS Admmin Portal Frontend",
+    description: "Frontend for the admin portal of the Event Management System.",
+    tags: ["React.js", "TypeScript", "TailwindCSS", "Figma"],
+    github: "https://github.com/Adhish-Krishna/EMSFrontend"
   },
   {
     title: "PSG - AI CONSORTIUM",

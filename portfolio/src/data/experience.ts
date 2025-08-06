@@ -9,6 +9,13 @@ export interface ExperienceItem {
 
 export const experiences: ExperienceItem[] = [
   {
+    title: "Backend Development (Internship)",
+    company: "AIBILL Project, Inria Grenoble & PSG College of Technology",
+    period: "Feb 2025 - Mar 2025",
+    description: "Contributed to back-end REST API development and PostgreSQL database integration for a mobile app prototype.Played a key role in the early-stage success of the AIBILL prototype in a research-industry setting.",
+    skills: ["Back-end", "Fast-API", "PostgreSQL", "REST-API"]
+  },
+  {
     title: "Member-Tech Team",
     company: "CSEA - PSG Tech, Coimbatore, India",
     period: "Aug 2024 - Present",
